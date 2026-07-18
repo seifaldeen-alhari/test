@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>عرض البيانات</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg: #f3f6f8;
+            --card: #ffffff;
+            --text: #243447;
+            --muted: #6c7a89;
+            --border: #dce3ea;
+            --accent: #2f3e4e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            text-align: center;
+            font-size: 26px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        input {
+            padding: 10px 12px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6b8fb3;
+        }
+
+        .date-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin: 10px 0 16px;
+        }
+
+        button {
+            padding: 10px 18px;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #tools {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0 8px;
+        }
+
+        #search {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #2d3d4e;
+            color: white;
+            padding: 12px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e8ecef;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background: #f7f9fb;
+        }
+
+        .message {
+            margin-top: 16px;
+            font-size: 16px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>عرض بيانات الأشخاص</h2>
+
+        <div class="controls">
+            <div class="options">
+                <label>
+                    <input type="radio" name="mode" value="today" checked onclick="changeMode()" />
+                    بيانات اليوم
+                </label>
+
+                <label>
+                    <input type="radio" name="mode" value="range" onclick="changeMode()" />
+                    فترة زمنية
+                </label>
+            </div>
+
+            <button onclick="loadPeople()">بحث</button>
+        </div>
+
+        <div id="dates" class="date-box hidden">
+            <label>من:</label>
+            <input type="date" id="start" />
+
+            <label>إلى:</label>
+            <input type="date" id="end" />
+        </div>
+
+        <div id="tools" class="hidden">
+            <input id="search" placeholder="بحث بالاسم أو الهاتف أو الرقم الوطني أو الجواز..."
+                oninput="filterTable()" />
+
+            <button onclick="exportCSV()">تصدير Excel</button>
+        </div>
+
+        <div id="result" class="message"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://qklrqulxfhotrvusvhdk.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_FwAsOKVUOagNHw3426fZlw_W_r3ubEj";
+
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+        let allPeople = [];
+
+        function changeMode() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const dates = document.getElementById("dates");
+            dates.classList.toggle("hidden", mode !== "range");
+        }
+
+        async function loadPeople() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const params = { mode };
+
+            if (mode === "range") {
+                params.start_date = document.getElementById("start").value;
+                params.end_date = document.getElementById("end").value;
+
+                if (!params.start_date || !params.end_date) {
+                    alert("اختر التاريخ");
+                    return;
+                }
+            }
+
+            document.getElementById("result").innerHTML = "جاري التحميل...";
+
+            const { data, error } = await supabaseClient.rpc("get_people", params);
+
+            if (error) {
+                document.getElementById("result").innerHTML = "خطأ: " + error.message;
+                return;
+            }
+
+            allPeople = data;
+
+            if (data.length === 0) {
+                document.getElementById("result").innerHTML = "لا توجد بيانات";
+                document.getElementById("tools").classList.add("hidden");
+                return;
+            }
+
+            document.getElementById("tools").classList.remove("hidden");
+            renderTable(data);
+        }
+
+        function renderTable(data) {
+            if (data.length === 0) {
+                document.getElementById("result").innerHTML = "لا توجد بيانات";
+                return;
+            }
+
+            let html = `
+          <div class="table-container">
+            <table>
+              <tr>
+                <th>الاسم</th>
+                <th>الجواز</th>
+                <th>الرقم الوطني</th>
+                <th>السيارة</th>
+                <th>الهاتف</th>
+                <th>الكود</th>
+                <th>التاريخ</th>
+              </tr>
+        `;
+
+            data.forEach(p => {
+                html += `
+            <tr>
+              <td>${p.name ?? ""}</td>
+              <td>${p.passport ?? ""}</td>
+              <td>${p.national_id ?? ""}</td>
+              <td>${p.car_number ?? ""}</td>
+              <td>${p.phone ?? ""}</td>
+              <td>${p.code ?? ""}</td>
+              <td>${new Date(p.created_at).toLocaleDateString("ar")}</td>
+            </tr>
+          `;
+            });
+
+            html += `</table></div>`;
+            document.getElementById("result").innerHTML = html;
+        }
+
+        function filterTable() {
+            const text = document.getElementById("search").value.trim().toLowerCase();
+
+            const filtered = allPeople.filter(p => {
+                return (
+                    (p.name ?? "").toLowerCase().includes(text) ||
+                    (p.phone ?? "").includes(text) ||
+                    (p.national_id ?? "").includes(text) ||
+                    (p.passport ?? "").toLowerCase().includes(text) ||
+                    (p.car_number ?? "").includes(text)
+                );
+            });
+
+            renderTable(filtered);
+        }
+
+        function exportCSV() {
+            const rows = [["الاسم", "الجواز", "الرقم الوطني", "السيارة", "الهاتف", "الكود", "التاريخ"]];
+
+            allPeople.forEach(p => {
+                rows.push([
+                    p.name ?? "",
+                    p.passport ?? "",
+                    p.national_id ?? "",
+                    p.car_number ?? "",
+                    p.phone ?? "",
+                    p.code ?? "",
+                    p.created_at ?? ""
+                ]);
+            });
+
+            const csv = rows.map(row => row.join(",")).join("\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "people.csv";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>إضافة أرقام الهواتف</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: #f5f5f5;
+        }
+
+
+        .box {
+
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+
+        }
+
+
+        textarea {
+
+            width: 100%;
+            height: 200px;
+            font-size: 18px;
+            padding: 10px;
+
+        }
+
+
+        button {
+
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+
+        }
+
+
+
+        .person {
+
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            background: #fafafa;
+
+        }
+
+
+        .title {
+
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+
+        }
+
+
+        .success {
+
+            color: green;
+
+        }
+
+
+        .exists {
+
+            color: #b88600;
+
+        }
+
+
+        .error {
+
+            color: red;
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="box">
+
+
+        <h2>إضافة أرقام الهواتف</h2>
+
+
+        <textarea id="input" placeholder="
+أدخل رقم هاتف أو رقمين:
+
+789456123
+
+أو:
+
+0789456123
+755555555
+"></textarea>
+
+
+        <br>
+
+
+        <button onclick="assignPhones()">
+            إضافة
+        </button>
+
+
+
+        <div id="result"></div>
+
+
+    </div>
+
+
+
+
+
+    <script>
+
+
+        const SUPABASE_URL =
+            "https://qklrqulxfhotrvusvhdk.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_FwAsOKVUOagNHw3426fZlw_W_r3ubEj";
+
+
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+
+
+
+        function parsePhones(text) {
+
+            return text
+                .split("\n")
+                .map(x => x.trim())
+                .filter(x => x.length > 0);
+
+        }
+
+
+
+
+
+
+
+
+        async function assignPhones() {
+
+
+            let text =
+                document.getElementById("input").value;
+
+
+            let phones =
+                parsePhones(text);
+
+
+
+            if (phones.length === 0) {
+
+                document.getElementById("result").innerHTML =
+                    "لم يتم إدخال أرقام";
+
+                return;
+
+            }
+
+
+
+
+            document.getElementById("result").innerHTML =
+                "جاري الإضافة...";
+
+
+
+
+
+            const { data, error } =
+
+                await supabaseClient.rpc(
+
+                    "assign_phones",
+
+                    {
+                        phone_numbers: phones
+                    }
+
+                );
+
+
+
+
+
+            if (error) {
+
+                document.getElementById("result").innerHTML =
+                    "خطأ:<br>" + error.message;
+
+                return;
+
+            }
+
+
+
+
+
+
+
+            let html = `
+
+    <h3>
+    تمت الإضافة: ${data.added}
+    <br>
+    موجود مسبقاً: ${data.exists}
+    </h3>
+
+    `;
+
+
+
+
+
+
+
+            for (let item of data.results) {
+
+
+
+                if (item.status === "added") {
+
+                    let p = item.person;
+
+
+                    html += `
+
+            <div class="person">
+
+            <div class="title success">
+            ✓ تمت إضافة الهاتف: ${item.phone}
+            </div>
+
+
+            الاسم:
+            ${p.name ?? ""}
+
+            <br>
+
+            الجواز:
+            ${p.passport ?? ""}
+
+            <br>
+
+            الرقم الوطني:
+            ${p.national_id ?? ""}
+
+            <br>
+
+            رقم السيارة:
+            ${p.car_number ?? ""}
+
+            <br>
+
+            الهاتف:
+            ${p.phone ?? ""}
+
+            <br>
+
+            الكود:
+            ${p.code ?? "لم يصل بعد"}
+
+            </div>
+
+            `;
+
+
+                }
+
+
+
+                else if (item.status === "exists") {
+
+
+                    let p = item.person;
+
+
+                    html += `
+
+
+            <div class="person">
+
+
+            <div class="title exists">
+            ⚠ الهاتف موجود مسبقاً: ${item.phone}
+            </div>
+
+
+            الاسم:
+            ${p.name ?? ""}
+
+            <br>
+
+            الجواز:
+            ${p.passport ?? ""}
+
+            <br>
+
+            الرقم الوطني:
+            ${p.national_id ?? ""}
+
+            <br>
+
+            رقم السيارة:
+            ${p.car_number ?? ""}
+
+            <br>
+
+            الهاتف:
+            ${p.phone ?? ""}
+
+            <br>
+
+            الكود:
+            ${p.code ?? "لم يصل بعد"}
+
+
+            </div>
+
+
+            `;
+
+
+                }
+
+
+
+                else if (item.status === "invalid_phone") {
+
+
+                    html += `
+
+            <div class="person error">
+
+            ❌ ${item.phone}
+            → رقم غير صالح
+
+            </div>
+
+            `;
+
+
+                }
+
+
+
+                else if (item.status === "no_empty_rows") {
+
+
+                    html += `
+
+            <div class="person error">
+
+            ❌ ${item.phone}
+            → لا يوجد شخص بدون هاتف
+
+            </div>
+
+            `;
+
+
+                }
+
+
+
+            }
+
+
+
+            document.getElementById("result").innerHTML =
+                html;
+
+
+
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>
