@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177371045-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-177371045-1');
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.gateway2jordan.gov.jo/img/favicon.png" type="image/x-icon" />
+    <title>
+
+    </title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light%7CPlayfair+Display:400"
+        rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/filestravelcars/calendar/css/datepicker-ar.css" />
+
+    <script type="text/javascript" src="/filestravelcars/js/css/html5.js"></script>
+    <!-- ALL CSS -->
+    <link rel="stylesheet" type="text/css" href="/filestravelcars/css/bootstrapAr.min.css" />
+    <link rel="stylesheet" type="text/css" href="/filestravelcars/css/styleAr.css" />
+    <link rel="stylesheet" type="text/css" href="/filestravelcars/css/mediaAr.css" />
+    <!-- ALL SCRIPT -->
+
+    <script type="text/javascript" src="/filestravelcars/js/css/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/filestravelcars/calendar/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="/filestravelcars/js/css/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+        function setUploadButtonState2() {
+            console.log('file upload 2');
+            var maxFileSize = 314572; // 300k
+            var fileUpload = $('#FileUpload2');
+            if (fileUpload.val() == '') {
+                return false;
+            }
+            else {
+                console.log(fileUpload[0].files[0].size);
+                if (fileUpload[0].files[0].size < maxFileSize) {
+                    $('#lblFileUpload2').text('')
+                    return true;
+                }
+                else {
+                    $('#lblFileUpload2').show();
+                    $('#lblFileUpload2').text('The file size is large')
+                    return false;
+                }
+            }
+        }
+
+    </script>
+
+
+
+
+    <style>
+        .honeypot {
+            display: none;
+        }
+
+        .captcha-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .captcha {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #fcb6b6;
+            border-radius: 4px;
+            background-color: #fff7f7;
+            color: #f96262;
+        }
+
+        .captcha-expression {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .honeypot {
+            display: none;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <style>
+        .tbl {
+            /*display: flex;
+            flex-direction: row;
+            gap: 15px;
+            margin: 10px 0;*/
+            margin: 10px;
+        }
+
+        .tbl input[type="radio"] {
+            display: none;
+        }
+
+        .tbl label {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tbl input[type="radio"]:checked+label {
+            background-color: #F08C00;
+            color: white;
+            border-color: #D97C00;
+        }
+
+        .tbl input[type="radio"]:focus+label {
+            outline: none;
+            box-shadow: 0 0 5px #007bff;
+        }
+
+        .tbl tbody {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .tbl tr {
+            /*                margin-left: 30px;*/
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+    </style>
+
+
+</head>
+
+<body dir="rtl">
+    <form name="form1" method="post" action="./" onsubmit="javascript:return WebForm_OnSubmit();" id="form1"
+        enctype="multipart/form-data">
+        <div>
+            <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+            <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE"
+                value="Y4Zuwc4Zxv3fFGmf9Y0RnLU0d1lLmecaAv6q+lxlQ/sQ4E/EBY2ERbx58Jc3xNfge1xB7zQkI3WlooGkh+t83kMvWNLK2SZGCjok8yfD3nlXNqIqEp17vctMB6ArOzJj/FVu2M3TRFxTN7IhVbMUSVRnn5kALqhlZKAgajBqjoJkA9m+CgNS19MCtF1oW2g5zT/HKDKWrWsqSZ4AZgfhpLQN3oL5g8dN+sRfS6k3aS7EDTbSnMI/UDFCxGUQfGP+RejP20ugcOWEkh5d0ZLpDu1h9n9mnHV5/blzIv7ZzYAzmZtwjrpgPKwqLOSw5SPOtl8ruFEJdel+fWjQwxn745QX//fxFFwIt20H4Zx6RWKu3PCsKYyXpvf2Avy+vdFy2YXyeVsK1JY9mZ3HaznF5XFf5qRRjajJSXi839hSQowD4t1yirUFJZX5PrN1brUwWOoiBzxrICii3+ne3jtroGRf2XyoRq09Xfc6b6I4QdoLrSIpTRqKl6OY6gSuq0WPXL6dsbF1WeJB7164NybIRRbS87CXxwNGjiu6QkVpthvPDwnbe619KXXbBIhXrddAG3kBahVtpFJVBx8zkojcL6qhHm4v8tyanC++NtcjuJzFFe/T20TZb26ktHEUmPJmuiW4RDvyk/qCG5FCL3E/OOeVYXw9MNafEIsyvVrhGcLUbBYFL5Hl1xy4xzXOCRH2ynfdoHhncj+plguVdyGnB/VzzzXJGMBBQZ4x2y8AQGJe1menRnHL2gSmG3bWYCmSKzdHNLwT5G4YxzjH4S2UNPjh2H9512I6BHk0zTZ42+05MHT0H3Gy2i/i5QlrIsVuMzwQUTHE5DX40mCNOKNtP9f0zItlwujwiXFG6NJXSZM8X7LDIkNB48oXRF05afgF/fNwogOWbtD6QhC2h4RUgg==" />
+        </div>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            var theForm = document.forms['form1'];
+            if (!theForm) {
+                theForm = document.form1;
+            }
+            function __doPostBack(eventTarget, eventArgument) {
+                if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+                    theForm.__EVENTTARGET.value = eventTarget;
+                    theForm.__EVENTARGUMENT.value = eventArgument;
+                    theForm.submit();
+                }
+            }
+            //]]>
+        </script>
+
+
+        <script
+            src="/WebResource.axd?d=qZ8ZqSKzFzUqRORoiXopRpkPqlCy0leTW9Btqk_smBSJ1G2yT5zmciqW1rzicI80S9A6O7GeWqR2ls81ZbJd32zafwGRrjKZFevN9Nu38gI1&amp;t=638901644248157332"
+            type="text/javascript"></script>
+
+
+        <script
+            src="/WebResource.axd?d=-3oeaqq7H25I5AMjKMJmBUw6KutOiBp50Iu7m1jBkFy8EqTw9pXjBjTTBkW629Wm00oBVq9f-E6XHNtU3KYy-dyHHOFy0s5_bVEiUBkis7A1&amp;t=638901644248157332"
+            type="text/javascript"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function WebForm_OnSubmit() {
+                if (typeof (ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+                return true;
+            }
+            //]]>
+        </script>
+
+        <div>
+
+            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="01AED449" />
+            <input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+            <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION"
+                value="i7rD3iG6iH1yK6vKqHFPJ4T6S2cnLST0Z8/aA18amQKExnX3gNz7EPBgbr+iTDgBcZVoRXpP58FseClkVTV8tCFDSZU1L0rmIXcz3hbfkN2JcStyqZ+zO8ASES2Lo53ZidMNojP4+Zzc4rwk1LK/2nSCUODVBzRgr8Tqt0f/P2IJ7ZM0AzaF+6Yii6S2+WFrds3G3s+hgTe607EJEo70A7VUAjpmei1zKQit1PCNmeA=" />
+        </div>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript"
+            src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+        <script type="text/javascript">
+            var onloadCallback = function () {
+                grecaptcha.render('dvCaptcha', {
+                    'sitekey': '6LdSg0YaAAAAANXhEwEZ2HgDdcGWGnXYppcfoswq',
+                    'hl': 'ar',
+                    'callback': function (response) {
+                        $.ajax({
+                            type: "POST",
+                            url: "Default.aspx/VerifyCaptcha",
+                            data: "{response: '" + response + "'}",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (r) {
+                                var captchaResponse = jQuery.parseJSON(r.d);
+                                //alert(captchaResponse.success);
+                                if (captchaResponse.success) {
+                                    //$("[id*=txtCaptcha]").val(captchaResponse.success);
+                                    $("[id*=txtCaptcha]").val("LP2023-1126");
+                                    $("[id*=rfvCaptcha]").hide();
+                                } else {
+                                    $("[id*=txtCaptcha]").val("");
+                                    $("[id*=rfvCaptcha]").show();
+                                    var error = captchaResponse["error-codes"][0];
+                                    $("[id*=rfvCaptcha]").html("RECaptcha error. " + error);
+                                }
+                            }
+                        });
+                    }
+                });
+            };
+        </script>
+
+
+        <!-- START HEADER PART -->
+        <header class="header">
+            <div class="logo">
+                <h1>
+                    <a href="https://www.gateway2jordan.gov.jo/travelcars/">
+                        <img src="../img/logo-ar.png" alt="" /></a>
+                    <input type="hidden" name="hidden11" id="hidden11" value="bec8e83b-7b74-4f64-b84b-a21bb698ca18" />
+                </h1>
+            </div>
+        </header>
+        <!-- END HEADER PART -->
+        <section class="travelpart">
+            <div class="container">
+                <div class="travelform">
+                    <div class="ctitle">
+                        <h3>نموذج تصريح سائقي السفريات - مركز حدود جابر</h3>
+                    </div>
+                    <div id="divNotes" class="col-xs-12 fieldrow" style="padding: 0px;">
+                        <div class="col-lg-12 col-xs-12 "
+                            style="border: 1px solid #fcb6b6; font-size: 25px; color: #f96262; padding: 20px; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; background-color: #fff7f7;">
+
+                            <div style="font-size: 15px; padding: 0px;">
+                                <h4>تعليمات السفر</h4>
+                                <br />
+                                <span style="font-size: 17px;"><b>- يرجى تقديم الطلب قبل ٤٨ ساعة من موعد
+                                        السفر.</b></span>
+
+                                <br />
+                                - على السائقين تعبئة النموذج أدناه والحصول على ال QR Code وتقديمه عند الطلب في المعبر
+                                الحدودي
+                                <br />
+                                - يرجى تحميل صورة جواز السفر فقط.
+                                <br />
+                                - تم إلغاء متطلب إحضار فحص ال PCR السلبي
+                                <br />
+                                - العدد المسموح للتسجيل على المنصة 100 سائق دخول للأردن.
+                                <br />
+                                - يسمح للسائق بالتسجيل على المنصة مرة واحدة خلال 4 ايام للدخول للأردن.
+                                <br />
+                                - يرجى العلم بأن الحصول على رمز QR هو شرط إلزامي لدخول الأردن.
+                                <br />
+                                - السائقين الاردنيين للخروج من الاردن الرجاء الاطلاع على تسلسل المركبات حسب التاريخ من
+                                خلال
+                                <a href="https://gateway2jordan.gov.jo/travelcars0426.pdf?042026"
+                                    target="_blank"><b>الرابط التالي</b></a>
+                                .
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="cform">
+
+
+
+                        <div class="row">
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <div id="divSMSCode" class="col-xs-12 fieldrow" style="margin-top: 30px;">
+                                <div class="col-lg-12 col-xs-12 errormsg">
+
+                                    ستتلقى رمز عبر رسالة نصية قصيرة ، يجب إدخاله في غضون 15 دقائق من الآن.
+                                    <span id="lblSMSCodeTime">23/04/2026 12:04:10 ص</span>
+                                </div>
+
+                                <div class="col-md-3 labelp">
+                                    <label>
+
+                                        أدخل الرمز من SMS الخاص بك
+                                        <span id="RequiredFieldValidatorSMSCode"
+                                            style="color:Red;display:none;">*</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-9 fieldp">
+                                    <input name="txtSMSCode" type="text" maxlength="15" id="txtSMSCode"
+                                        class="form-control custfield" placeholder="أدخل الرمز من SMS الخاص بك هنا" />
+                                </div>
+
+                                <div class="col-lg-12 col-xs-12 errormsg">
+
+                                    في حال لم تتلقى رمز عبر رسالة نصية قصيرة في غضون 15 دقائق ، يجب اعادة التسجيل مرة
+                                    اخرة.
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-xs-12 btnbox">
+                                <input name="hidorder" type="hidden" id="hidorder" />
+                                <input name="hidorder2" type="hidden" id="hidorder2" />
+                                <input type="submit" name="SubmitInvest" value="إرسال الطلب"
+                                    onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;SubmitInvest&quot;, &quot;&quot;, true, &quot;Invest&quot;, &quot;&quot;, false, false))"
+                                    id="SubmitInvest" class="cbtn" type="submit" value="" />
+
+
+
+
+
+
+
+
+                                <h4></h4>
+                                <div id="ValidationSummary1" style="color:Red;display:none;">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- START FOOTER PART -->
+        <footer class="footer">
+            <div class="container">
+                <p>© 2020 جميع الحقوق محفوظة.</p>
+                <div class="social">
+                </div>
+            </div>
+        </footer>
+        <!-- END FOOTER PART -->
+
+
+
+        <script>
+
+            function CustomValidatorJordanEntOrExt_ClientValidate(source, args) {
+                if (document.getElementById("rbEntJor").checked) {
+                    args.IsValid = true;
+                }
+                else {
+                    args.IsValid = false;
+                }
+            }
+
+            function CustomValidatoraAgreed3_ClientValidate(source, args) {
+                if (document.getElementById("chAgreed3").checked) {
+                    args.IsValid = true;
+                }
+                else {
+                    args.IsValid = false;
+                }
+            }
+
+        </script>
+
+
+        <script type="text/javascript">
+            //<![CDATA[
+            var Page_ValidationSummaries = new Array(document.getElementById("ValidationSummary1"));
+            var Page_Validators = new Array(document.getElementById("RequiredFieldValidatorSMSCode"));
+            //]]>
+        </script>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            var RequiredFieldValidatorSMSCode = document.all ? document.all["RequiredFieldValidatorSMSCode"] : document.getElementById("RequiredFieldValidatorSMSCode");
+            RequiredFieldValidatorSMSCode.controltovalidate = "txtSMSCode";
+            RequiredFieldValidatorSMSCode.focusOnError = "t";
+            RequiredFieldValidatorSMSCode.errormessage = "الرجاء إدخال الرمز من SMS الخاص بك";
+            RequiredFieldValidatorSMSCode.display = "Dynamic";
+            RequiredFieldValidatorSMSCode.validationGroup = "Invest";
+            RequiredFieldValidatorSMSCode.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+            RequiredFieldValidatorSMSCode.initialvalue = "";
+            var ValidationSummary1 = document.all ? document.all["ValidationSummary1"] : document.getElementById("ValidationSummary1");
+            ValidationSummary1.showmessagebox = "True";
+            ValidationSummary1.showsummary = "False";
+            ValidationSummary1.validationGroup = "Invest";
+            //]]>
+        </script>
+
+
+        <script type="text/javascript">
+            //<![CDATA[
+
+            var Page_ValidationActive = false;
+            if (typeof (ValidatorOnLoad) == "function") {
+                ValidatorOnLoad();
+            }
+
+            function ValidatorOnSubmit() {
+                if (Page_ValidationActive) {
+                    return ValidatorCommonOnSubmit();
+                }
+                else {
+                    return true;
+                }
+            }
+            //]]>
+        </script>
+    </form>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516"
+        integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg=="
+        data-cf-beacon='{"version":"2024.11.0","token":"031e889f9a35462ea27b71fe7e080d4f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
